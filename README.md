@@ -12,17 +12,22 @@
 2. **Access the AWS Management Console**:
    - Once your account is set up, log in to the [AWS Management Console](https://aws.amazon.com/console/).
    - This is your central hub for managing AWS services.
+![image](https://github.com/Zatch07/Backing-and-Restoring-AWS-EC2-instances-with-Automated-Script/assets/56155256/34fb38fb-ac91-47b0-b880-f2b8255159d5)
 
 ### Creating an EC2 Instance in AWS
 
 #### 1: Launch Instance
 
 1. Inside the EC2 Dashboard, click on the **Launch Instance** button. This starts the process of creating a new EC2 instance.
+   ![image](https://github.com/Zatch07/Backing-and-Restoring-AWS-EC2-instances-with-Automated-Script/assets/56155256/84c6cc52-668b-42a5-a44e-151388b0f955)
+
 
 ### 2: Choose an Amazon Machine Image (AMI)
 
 1. You will be presented with a list of Amazon Machine Images (AMIs). Select the AMI that suits your requirements. 
-   - For beginners, Amazon Linux 2 AMI or Ubuntu Server are popular choices.
+   - For beginners, Amazon Linux 2 AMI or Ubuntu Server are popular choices
+   ![image](https://github.com/Zatch07/Backing-and-Restoring-AWS-EC2-instances-with-Automated-Script/assets/56155256/25315fce-f947-475f-b88f-ed541b39c7f0)
+
 
 ### 3: Choose an Instance Type
 
@@ -59,6 +64,8 @@
 3. You will be prompted to select a key pair. Use an existing key pair or create a new one. If creating a new one, download and save it securely; you will need it to SSH into your instance.
 4. After selecting your key pair, acknowledge that you have access to the selected private key file by checking the box.
 5. Click **Launch Instances**.
+   ![image](https://github.com/Zatch07/Backing-and-Restoring-AWS-EC2-instances-with-Automated-Script/assets/56155256/6f85c4cb-c4eb-42fb-9aa6-2a706dca217b)
+
 
 ## Connecting to an EC2 Instance Using VS Code
 
@@ -67,6 +74,8 @@
 1. Open VS Code.
 2. Go to the Extensions view by clicking on the square icon on the sidebar or pressing `Ctrl+Shift+X`.
 3. Search for `Remote - SSH` and click on the install button.
+   ![image](https://github.com/Zatch07/Backing-and-Restoring-AWS-EC2-instances-with-Automated-Script/assets/56155256/5446ca76-5ae9-4cb7-8167-da6660d09fa0)
+
 
 ### Step 2: Configure SSH
 
@@ -135,28 +144,16 @@ To create an Amazon Machine Image (AMI), your IAM user or role needs specific pe
 2. The user or role should now have the necessary permissions to create an AMI.
 
 
-## Manually Creating an AMI
+## Creating an AMI
 
-### Step 1: Open the Integrated Terminal in VS Code
-
-- With your SSH session active in VS Code, open the integrated terminal by selecting **Terminal > New Terminal** from the main menu or using the `Ctrl+`` shortcut.
-
-### Step 2: Install AWS CLI (if necessary)
-
-If AWS CLI is not installed on your EC2 instance, install it by running:
-    ```bash
-    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-    unzip awscliv2.zip
-    sudo ./aws/install
-
-### Step 3: Configure AWS CLI
+### Step 1: Configure AWS CLI
 - If not already configured, set up the AWS CLI with your credentials:
     ```bash
     aws configure
 
 - Enter your AWS Access Key ID, Secret Access Key, region, and output format as prompted.
     
-### Step 4: Create the AMI
+### Step 2: Create the AMI
 - Run the following command to create an AMI from your instance. Replace 'instance-id' with your actual instance ID and 'MyAMIName' with your desired AMI name.
     
     ```bash
@@ -182,12 +179,16 @@ Automating the AMI creation process requires using AWS Lambda and Amazon EventBr
 #### 1. Navigate to AWS Lambda
 
 - Go to the AWS Lambda console and click **Create function**.
+  ![image](https://github.com/Zatch07/Backing-and-Restoring-AWS-EC2-instances-with-Automated-Script/assets/56155256/e5f0543c-cdf6-4876-ba4e-1ad764702fff)
+
 
 #### 2. Configure the Function
 
 - Choose **Author from scratch**.
 - Name your function and select the IAM role you created earlier.
 - Choose Python or another preferred runtime.
+  ![image](https://github.com/Zatch07/Backing-and-Restoring-AWS-EC2-instances-with-Automated-Script/assets/56155256/6e9b9f77-653d-476e-9cae-11201f8ba8b2)
+
 
 #### 3. Function Code
 - Use the code in [Lambda.py](https://github.com/Zatch07/Backing-and-Restoring-AWS-EC2-instances-with-Automated-Script/blob/main/lambda.py)
@@ -224,39 +225,35 @@ Automating the AMI creation process requires using AWS Lambda and Amazon EventBr
 1. Review your rule settings to ensure everything is configured as desired.
 2. Click **Create rule** to finalize and activate the scheduled execution of your Lambda function.
 
-By following these steps, you've successfully scheduled your Lambda function to run automatically every 7 days using Amazon EventBridge, enabling regular task execution without manual intervention.
 
 
 ## Restoring an AMI to a New EC2 Instance and Verifying File Presence
 
-This guide will walk you through the process of launching a new EC2 instance from an Amazon Machine Image (AMI) and verifying that a specific file (`randomfile.txt`) exists on the new instance.
-
 ### Step 1: Launch a New Instance from the AMI
 
-1. **Log in to the AWS Management Console**:
-   - Navigate to the [AWS Management Console](https://aws.amazon.com/console/) and sign in.
-
-2. **Access the EC2 Dashboard**:
+1. **Access the EC2 Dashboard**:
    - Find and select **EC2** from the Services menu to open the EC2 Dashboard.
 
-3. **Launch a New Instance**:
+2. **Launch a New Instance**:
    - Click on the **Launch Instances** button.
    - In the **Choose an Amazon Machine Image (AMI)** section, select **My AMIs** on the left side. This will display the AMIs you have created.
    - Find the AMI you want to use for restoration and click on the **Select** button next to it.
+     ![image](https://github.com/Zatch07/Backing-and-Restoring-AWS-EC2-instances-with-Automated-Script/assets/56155256/2616e325-883f-4a06-88dd-0874f468beed)
 
-4. **Choose an Instance Type**:
+
+3. **Choose an Instance Type**:
    - Select the instance type you wish to use. You can choose the same type as the original instance or a different one depending on your requirements.
    - Click **Next: Configure Instance Details**.
 
-5. **Configure Instance and Add Storage** (optional):
+4. **Configure Instance and Add Storage** (optional):
    - Configure the instance details as needed. The default options are typically sufficient.
    - Click **Next** until you reach the **Configure Security Group** section.
 
-6. **Configure Security Group**:
+5. **Configure Security Group**:
    - You can select an existing security group or create a new one. Ensure that the security group allows you access to connect to the instance, typically through SSH (port 22).
    - Click **Review and Launch**.
 
-7. **Review and Launch**:
+6. **Review and Launch**:
    - Review your instance settings. If everything is correct, click **Launch**.
    - You will be prompted to select a key pair. Use an existing key pair or create a new one, then click **Launch Instances**.
 
